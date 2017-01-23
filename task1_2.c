@@ -12,11 +12,39 @@ double degToRad(double deg) {
   return (deg * PI / 180);
 } 
 
-void turn(double angle) {
+void turnSpecificAngle(int angle) {
   double radAngle = degToRad(angle);
   int distanceDrive = radAngle * cmToTicks((ROBOT_WIDTH / 2));
   drive_goto(-(distanceDrive),(distanceDrive));
 }
+
+void turn(int angle) {
+
+  switch (angle) {
+    case 180:
+      drive_goto(-52,51);
+      break;
+    case -180:
+      drive_goto(52, -51);
+      break;
+    case 90:
+      drive_goto(-26,25);
+      break;
+    case -90: 
+      drive_goto(26,-25);
+      break;
+    case 360:
+      drive_goto(-103, 102);
+      break;
+    case -360: 
+      drive_goto(103, -102);
+      break;
+    default:
+      turnSpecificAngle(angle);
+      break;
+    }
+}
+
 
 void spinRad(int n, int r) {
   float angle = 360 / n;
@@ -31,9 +59,10 @@ void spinRad(int n, int r) {
 }
 
 void simpleSpin(){
-  turn(370);
+  turn(360);
 }
 
 int main() {
-  spinRad(20, 20);
+  simpleSpin();
+  return 0;
 }                                    
