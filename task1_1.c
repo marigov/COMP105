@@ -18,14 +18,13 @@ void turn(double angle) {
   drive_goto(-(distanceDrive+1),(distanceDrive+1));
 }
 
-//helloo
 
 
 int main() {
   int meterTicks = cmToTicks(50);
   for(int i = 0; i < 4; i++) {
     drive_goto(meterTicks,meterTicks);
-    turn(90);
+    drive_goto(-26,25);
   }
   return 0;
 }                                    
