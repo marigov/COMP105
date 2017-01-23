@@ -45,17 +45,15 @@ void turn(int angle) {
     }
 }
 
-
+//spinRad enables to spin around a point, given the nubmer of sides of a polygon (n) and the radius (r)
 void spinRad(int n, int r) {
   float angle = 360 / n;
   float side = 2 * r * sin (PI / n);
   
-  for (int i = 1; i <= n; i++)         // repeats forward and right turn commands  
-  {
-   drive_goto(cmToTicks(round(side)),cmToTicks(round(side)));   // Move forward
-   turn(angle);  // Turn right or left
-  }  
-  
+  for (int i = 1; i <= n; i++) {
+   drive_goto(cmToTicks(round(side)),cmToTicks(round(side)));
+   turn(angle);
+  }   
 }
 
 void simpleSpin(){

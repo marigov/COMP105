@@ -12,19 +12,60 @@ double degToRad(double deg) {
   return (deg * PI / 180);
 } 
 
-void turn(double angle) {
+void turnSpecificAngle(int angle) {
   double radAngle = degToRad(angle);
   int distanceDrive = radAngle * cmToTicks((ROBOT_WIDTH / 2));
-  drive_goto(-(distanceDrive+1),(distanceDrive+1));
+  drive_goto(-(distanceDrive),(distanceDrive));
 }
 
+void turn(int angle) {
 
+  switch (angle) {
+    case 180:
+      drive_goto(-52,51);
+      break;
+    case -180:
+      drive_goto(52, -51);
+      break;
+    case 90:
+      drive_goto(-26,25);
+      break;
+    case -90: 
+      drive_goto(26,-25);
+      break;
+    case 360:
+      drive_goto(-103, 102);
+      break;
+    case -360: 
+      drive_goto(103, -102);
+      break;
+    default:
+      turnSpecificAngle(angle);
+      break;
+    }
+}
 
 int main() {
-  int meterTicks = cmToTicks(50);
-  for(int i = 0; i < 4; i++) {
+  drive_goto(cmToTicks(-50),cmToTicks(-50));
+  turn(-90);
+  drive_goto(cmToTicks(50),cmToTicks(50));
+  turn(90);
+  
+  printf("Starting square");
+  int meterTicks = cmToTicks(100);
+  for(int i = 0; i < 4; i++){
     drive_goto(meterTicks,meterTicks);
-    drive_goto(-26,25);
+    turn(90);
+    drive_goto(meterTicks,meterTicks);
+    drive_goto(-25,27); //modified for accurate turn
+    drive_goto(meterTicks,meterTicks);
+    turn(90);
+    drive_goto(meterTicks,meterTicks);
+    drive_goto(-25,27); //modified for accurate turn
   }
+
+
+
+    
   return 0;
 }                                    
