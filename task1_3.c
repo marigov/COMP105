@@ -195,7 +195,7 @@ int main() {
   char word[20];
   printf("Please, enter a word: \n");
   scanf("%s", word);
-  drive_goto(cmToTicks(-50),cmToTicks(-50));
+  drive_goto(cmToTicks(-50),cmToTicks(-50)); //Go backwards to have space in the simulator
   wordMove(word);
   return 0;
  

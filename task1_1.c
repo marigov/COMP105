@@ -46,26 +46,23 @@ void turn(int angle) {
 }
 
 int main() {
+  
+  //No space to start from the center in the simulator
   drive_goto(cmToTicks(-50),cmToTicks(-50));
   turn(-90);
   drive_goto(cmToTicks(50),cmToTicks(50));
   turn(90);
   
-  printf("Starting square");
+  //Starting square
   int meterTicks = cmToTicks(100);
-  for(int i = 0; i < 4; i++){
-    drive_goto(meterTicks,meterTicks);
-    turn(90);
-    drive_goto(meterTicks,meterTicks);
-    drive_goto(-25,27); //modified for accurate turn
-    drive_goto(meterTicks,meterTicks);
-    turn(90);
-    drive_goto(meterTicks,meterTicks);
-    drive_goto(-25,27); //modified for accurate turn
-  }
-
-
-
+  drive_goto(meterTicks,meterTicks);
+  turn(90);
+  drive_goto(meterTicks,meterTicks);
+  drive_goto(-25,27); //modified for accurate turn
+  drive_goto(meterTicks,meterTicks);
+  turn(90);
+  drive_goto(meterTicks,meterTicks);
+  drive_goto(-25,27); //modified for accurate turn
     
   return 0;
 }                                    

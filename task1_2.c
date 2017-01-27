@@ -45,13 +45,13 @@ void turn(int angle) {
     }
 }
 
-//spinRad enables to spin around a point, given the nubmer of sides of a polygon (n) and the radius (r)
+//spinRad enables to spin around a point, given the nubmer of sides of a polygon (n) and the radius (r). Unused for now.
 void spinRad(int n, int r) {
   float angle = 360 / n;
   float side = 2 * r * sin (PI / n);
   
   for (int i = 1; i <= n; i++) {
-   drive_goto(cmToTicks(round(side)),cmToTicks(round(side)));
+   drive_goto(cmToTicks(side),cmToTicks(side));
    turn(angle);
   }   
 }
@@ -61,6 +61,8 @@ void simpleSpin(){
 }
 
 int main() {
-  simpleSpin();
-  return 0;
+  while(1){
+    simpleSpin();
+    return 0;
+  }
 }                                    
