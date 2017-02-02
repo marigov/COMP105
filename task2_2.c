@@ -8,17 +8,17 @@ int main() {
   print("Enter number of elements: \n");
   scan("%d",&length); 
   int list[length];
-  
+
   print("Enter %d of elements: \n",length);
-  
+
   for(int i = 0; i < length; i++) {
       scan("%d", list + i);
   }
-  
+
   int i = 1;
   int n = 0;
   int unordered = 1;
-    
+
   while(unordered==1){
     unordered = 0;
     i = 0;
@@ -30,15 +30,15 @@ int main() {
         list[i] = list[i+1];
         list[i+1] = temp;
         unordered = 1;
-        /*for(int i = 0; i < length; i++) {
+        for(int i = 0; i < length; i++) {
           print("%d ", list[i]);
         }
-        print("\n");*/
+        print("\n");
       }
-      
+
     i++;
   }
 }
-  
+
   return 0;
 }

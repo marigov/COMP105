@@ -111,6 +111,96 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+applications/CMakeFiles/task2_4.dir/rule:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f CMakeFiles/Makefile2 applications/CMakeFiles/task2_4.dir/rule
+.PHONY : applications/CMakeFiles/task2_4.dir/rule
+
+# Convenience name for target.
+task2_4: applications/CMakeFiles/task2_4.dir/rule
+
+.PHONY : task2_4
+
+# fast build rule for target.
+task2_4/fast:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_4.dir/build.make applications/CMakeFiles/task2_4.dir/build
+.PHONY : task2_4/fast
+
+# Convenience name for target.
+applications/CMakeFiles/task1_1.dir/rule:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f CMakeFiles/Makefile2 applications/CMakeFiles/task1_1.dir/rule
+.PHONY : applications/CMakeFiles/task1_1.dir/rule
+
+# Convenience name for target.
+task1_1: applications/CMakeFiles/task1_1.dir/rule
+
+.PHONY : task1_1
+
+# fast build rule for target.
+task1_1/fast:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task1_1.dir/build.make applications/CMakeFiles/task1_1.dir/build
+.PHONY : task1_1/fast
+
+# Convenience name for target.
+applications/CMakeFiles/task2_5.dir/rule:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f CMakeFiles/Makefile2 applications/CMakeFiles/task2_5.dir/rule
+.PHONY : applications/CMakeFiles/task2_5.dir/rule
+
+# Convenience name for target.
+task2_5: applications/CMakeFiles/task2_5.dir/rule
+
+.PHONY : task2_5
+
+# fast build rule for target.
+task2_5/fast:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_5.dir/build.make applications/CMakeFiles/task2_5.dir/build
+.PHONY : task2_5/fast
+
+# Convenience name for target.
+applications/CMakeFiles/task2_3.dir/rule:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f CMakeFiles/Makefile2 applications/CMakeFiles/task2_3.dir/rule
+.PHONY : applications/CMakeFiles/task2_3.dir/rule
+
+# Convenience name for target.
+task2_3: applications/CMakeFiles/task2_3.dir/rule
+
+.PHONY : task2_3
+
+# fast build rule for target.
+task2_3/fast:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_3.dir/build.make applications/CMakeFiles/task2_3.dir/build
+.PHONY : task2_3/fast
+
+# Convenience name for target.
+applications/CMakeFiles/task2_2.dir/rule:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f CMakeFiles/Makefile2 applications/CMakeFiles/task2_2.dir/rule
+.PHONY : applications/CMakeFiles/task2_2.dir/rule
+
+# Convenience name for target.
+task2_2: applications/CMakeFiles/task2_2.dir/rule
+
+.PHONY : task2_2
+
+# fast build rule for target.
+task2_2/fast:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_2.dir/build.make applications/CMakeFiles/task2_2.dir/build
+.PHONY : task2_2/fast
+
+# Convenience name for target.
+applications/CMakeFiles/task2_1.dir/rule:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f CMakeFiles/Makefile2 applications/CMakeFiles/task2_1.dir/rule
+.PHONY : applications/CMakeFiles/task2_1.dir/rule
+
+# Convenience name for target.
+task2_1: applications/CMakeFiles/task2_1.dir/rule
+
+.PHONY : task2_1
+
+# fast build rule for target.
+task2_1/fast:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_1.dir/build.make applications/CMakeFiles/task2_1.dir/build
+.PHONY : task2_1/fast
+
+# Convenience name for target.
 applications/CMakeFiles/task1_2.dir/rule:
 	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f CMakeFiles/Makefile2 applications/CMakeFiles/task1_2.dir/rule
 .PHONY : applications/CMakeFiles/task1_2.dir/rule
@@ -139,21 +229,6 @@ spinLeftRight: applications/CMakeFiles/spinLeftRight.dir/rule
 spinLeftRight/fast:
 	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/spinLeftRight.dir/build.make applications/CMakeFiles/spinLeftRight.dir/build
 .PHONY : spinLeftRight/fast
-
-# Convenience name for target.
-applications/CMakeFiles/task1_1.dir/rule:
-	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f CMakeFiles/Makefile2 applications/CMakeFiles/task1_1.dir/rule
-.PHONY : applications/CMakeFiles/task1_1.dir/rule
-
-# Convenience name for target.
-task1_1: applications/CMakeFiles/task1_1.dir/rule
-
-.PHONY : task1_1
-
-# fast build rule for target.
-task1_1/fast:
-	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task1_1.dir/build.make applications/CMakeFiles/task1_1.dir/build
-.PHONY : task1_1/fast
 
 # Convenience name for target.
 applications/CMakeFiles/task1_0.dir/rule:
@@ -320,6 +395,141 @@ task1_3.c.s:
 	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task1_3.dir/build.make applications/CMakeFiles/task1_3.dir/task1_3.c.s
 .PHONY : task1_3.c.s
 
+task2_1.o: task2_1.c.o
+
+.PHONY : task2_1.o
+
+# target to build an object file
+task2_1.c.o:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_1.dir/build.make applications/CMakeFiles/task2_1.dir/task2_1.c.o
+.PHONY : task2_1.c.o
+
+task2_1.i: task2_1.c.i
+
+.PHONY : task2_1.i
+
+# target to preprocess a source file
+task2_1.c.i:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_1.dir/build.make applications/CMakeFiles/task2_1.dir/task2_1.c.i
+.PHONY : task2_1.c.i
+
+task2_1.s: task2_1.c.s
+
+.PHONY : task2_1.s
+
+# target to generate assembly for a file
+task2_1.c.s:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_1.dir/build.make applications/CMakeFiles/task2_1.dir/task2_1.c.s
+.PHONY : task2_1.c.s
+
+task2_2.o: task2_2.c.o
+
+.PHONY : task2_2.o
+
+# target to build an object file
+task2_2.c.o:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_2.dir/build.make applications/CMakeFiles/task2_2.dir/task2_2.c.o
+.PHONY : task2_2.c.o
+
+task2_2.i: task2_2.c.i
+
+.PHONY : task2_2.i
+
+# target to preprocess a source file
+task2_2.c.i:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_2.dir/build.make applications/CMakeFiles/task2_2.dir/task2_2.c.i
+.PHONY : task2_2.c.i
+
+task2_2.s: task2_2.c.s
+
+.PHONY : task2_2.s
+
+# target to generate assembly for a file
+task2_2.c.s:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_2.dir/build.make applications/CMakeFiles/task2_2.dir/task2_2.c.s
+.PHONY : task2_2.c.s
+
+task2_3.o: task2_3.c.o
+
+.PHONY : task2_3.o
+
+# target to build an object file
+task2_3.c.o:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_3.dir/build.make applications/CMakeFiles/task2_3.dir/task2_3.c.o
+.PHONY : task2_3.c.o
+
+task2_3.i: task2_3.c.i
+
+.PHONY : task2_3.i
+
+# target to preprocess a source file
+task2_3.c.i:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_3.dir/build.make applications/CMakeFiles/task2_3.dir/task2_3.c.i
+.PHONY : task2_3.c.i
+
+task2_3.s: task2_3.c.s
+
+.PHONY : task2_3.s
+
+# target to generate assembly for a file
+task2_3.c.s:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_3.dir/build.make applications/CMakeFiles/task2_3.dir/task2_3.c.s
+.PHONY : task2_3.c.s
+
+task2_4.o: task2_4.c.o
+
+.PHONY : task2_4.o
+
+# target to build an object file
+task2_4.c.o:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_4.dir/build.make applications/CMakeFiles/task2_4.dir/task2_4.c.o
+.PHONY : task2_4.c.o
+
+task2_4.i: task2_4.c.i
+
+.PHONY : task2_4.i
+
+# target to preprocess a source file
+task2_4.c.i:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_4.dir/build.make applications/CMakeFiles/task2_4.dir/task2_4.c.i
+.PHONY : task2_4.c.i
+
+task2_4.s: task2_4.c.s
+
+.PHONY : task2_4.s
+
+# target to generate assembly for a file
+task2_4.c.s:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_4.dir/build.make applications/CMakeFiles/task2_4.dir/task2_4.c.s
+.PHONY : task2_4.c.s
+
+task2_5.o: task2_5.c.o
+
+.PHONY : task2_5.o
+
+# target to build an object file
+task2_5.c.o:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_5.dir/build.make applications/CMakeFiles/task2_5.dir/task2_5.c.o
+.PHONY : task2_5.c.o
+
+task2_5.i: task2_5.c.i
+
+.PHONY : task2_5.i
+
+# target to preprocess a source file
+task2_5.c.i:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_5.dir/build.make applications/CMakeFiles/task2_5.dir/task2_5.c.i
+.PHONY : task2_5.c.i
+
+task2_5.s: task2_5.c.s
+
+.PHONY : task2_5.s
+
+# target to generate assembly for a file
+task2_5.c.s:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/task2_5.dir/build.make applications/CMakeFiles/task2_5.dir/task2_5.c.s
+.PHONY : task2_5.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -327,10 +537,15 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... task2_4"
+	@echo "... task1_1"
+	@echo "... task2_5"
+	@echo "... task2_3"
 	@echo "... edit_cache"
+	@echo "... task2_2"
+	@echo "... task2_1"
 	@echo "... task1_2"
 	@echo "... spinLeftRight"
-	@echo "... task1_1"
 	@echo "... task1_0"
 	@echo "... task1_3"
 	@echo "... spinLeftRight.o"
@@ -348,6 +563,21 @@ help:
 	@echo "... task1_3.o"
 	@echo "... task1_3.i"
 	@echo "... task1_3.s"
+	@echo "... task2_1.o"
+	@echo "... task2_1.i"
+	@echo "... task2_1.s"
+	@echo "... task2_2.o"
+	@echo "... task2_2.i"
+	@echo "... task2_2.s"
+	@echo "... task2_3.o"
+	@echo "... task2_3.i"
+	@echo "... task2_3.s"
+	@echo "... task2_4.o"
+	@echo "... task2_4.i"
+	@echo "... task2_4.s"
+	@echo "... task2_5.o"
+	@echo "... task2_5.i"
+	@echo "... task2_5.s"
 .PHONY : help
 
 
