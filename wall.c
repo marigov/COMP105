@@ -1,64 +1,51 @@
 #include "simpletools.h"                      // Include simpletools header
 #include "abdrive.h"                          // Include abdrive header
-#include "ping.h"                             // Include ping header
+#include "ping.h"
+#include <time.h>                             // Include ping heade
 
-int irLeft, irRight, error, integral = 0, last_error, derivative;
-int speed = 0, kp = 1, ki=1, kd=1;
+int irLeft = 0;
+int irRight = 0;
+int baseSpeed = 48;
+float actual_error, error_previous, P, I, D, Kp = 1.45, Ki = 0, Kd = 0;
 
+int main() {
+    low(26);
+    low(27);
 
+    while (1) {
+        for (int dacVal = 0; dacVal < 160; dacVal += 8) {
+            dac_ctr(26, 0, dacVal);
+            freqout(11, 1, 38000);
+            irLeft += input(10);                          // Left side IR-sensor
 
-void detectIR(){
-    low(26);                                   
-    low(27); 
+            dac_ctr(27, 1, dacVal);
+            freqout(1, 1, 38000);
+            irRight += input(2);                          // Right side IR-sensor
+        }
 
-    irLeft = 0;
-    irRight = 0;
-    for(int dacVal = 0; dacVal < 160; dacVal += 8)  
-    {                                               
-      dac_ctr(26, 0, dacVal);                       
-      freqout(11, 1, 38000);                        
-      irLeft += input(10);                         
+        error_previous = actual_error;
+        actual_error = 0 - (irRight - irLeft);
 
-      dac_ctr(27, 1, dacVal);                       
-      freqout(1, 1, 38000);
-      irRight += input(2);                          
-    }                                                 
-}
+        P  = actual_error;   //Current error
+        I += error_previous;  //Sum of previous errors
+        D  = actual_error - error_previous;  //Difference with previous error
 
-                         
-int main()                                    // main function
-{   
-  
-  
-        long currentTime = dt_getms();
-  
+        float correction = Kp * P + Ki * I + Kd * D;
 
-        
-                
-        /*
-        
-         
-         
-         
-         
-        drive_setRampStep(10);                      // 10 ticks/sec / 20 ms
-        drive_ramp(50, 50);                       // Forward 2 RPS
-        
-        detectIR();
-        printf("Ping: %d, left IR: %d, right IR: %d \n", ping_cm(8),irLeft, irRight);
-        fflush(stdout);                          // rotate right
-        while(ping_cm(8) >= 30) pause(5); 
-                                                    // Wait until object in range
-        drive_ramp(0, 0);                           // Then stop
-        
-        drive_speed(25, -25);
-        detectIR();
-        printf("Ping: %d, left IR: %d, right IR: %d \n", ping_cm(8),irLeft, irRight);
-        fflush(stdout);                          // rotate right
-        while(ping_cm(8) < 30);                     // Turn till object leaves view
-        
-        drive_ramp(0, 0);  
-        
-        */       
-    
+        printf("%f \n", correction);
+        printf("irLeft: %d, irRight: %d \n", irLeft, irRight);
+        printf("irLeft: %d, irRight: %d \n", irLeft, irRight);
+
+        if (correction == 0) {
+            drive_speed(baseSpeed, baseSpeed);
+        }
+        else if (correction < 0) {
+            drive_speed(baseSpeed + (correction * -1), baseSpeed + (correction));
+        }
+        else if (correction > 0) {
+            drive_speed(baseSpeed + (correction * -1), baseSpeed + (correction));
+        }
+        irLeft = 0;
+        irRight = 0;
+    }
 }

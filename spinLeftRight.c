@@ -3,12 +3,12 @@
 
 int main()                                      // main function
 {
-  while(1)
+    while (1)
     {
-      drive_goto(26, -27);
-      pause(1000);
-      drive_goto(-26, 27);
-      pause(1000);
+        drive_goto(26, -27);
+        pause(1000);
+        drive_goto(-26, 27);
+        pause(1000);
     }
 }
 
