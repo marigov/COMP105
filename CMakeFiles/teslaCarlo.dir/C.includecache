@@ -6,6 +6,22 @@
 
 #IncludeRegexTransform: 
 
+/Users/marigov/Documents/Simulator_Release_170110/Client/applications/stdrobot.c
+stdrobot.h
+/Users/marigov/Documents/Simulator_Release_170110/Client/applications/stdrobot.h
+
+/Users/marigov/Documents/Simulator_Release_170110/Client/applications/stdrobot.h
+simpletools.h
+/Users/marigov/Documents/Simulator_Release_170110/Client/applications/simpletools.h
+abdrive.h
+/Users/marigov/Documents/Simulator_Release_170110/Client/applications/abdrive.h
+stdlib.h
+-
+math.h
+-
+stdint.h
+-
+
 /Users/marigov/Documents/Simulator_Release_170110/Client/applications/teslaCarlo.c
 simpletools.h
 /Users/marigov/Documents/Simulator_Release_170110/Client/applications/simpletools.h
@@ -13,8 +29,8 @@ abdrive.h
 /Users/marigov/Documents/Simulator_Release_170110/Client/applications/abdrive.h
 ping.h
 /Users/marigov/Documents/Simulator_Release_170110/Client/applications/ping.h
-time.h
--
+stdrobot.h
+/Users/marigov/Documents/Simulator_Release_170110/Client/applications/stdrobot.h
 
 include/abdrive.h
 simpletools.h

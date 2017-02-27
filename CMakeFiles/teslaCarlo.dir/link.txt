@@ -1,1 +1,1 @@
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/teslaCarlo.dir/teslaCarlo.c.o  -o teslaCarlo  ../src/libclient.a 
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/teslaCarlo.dir/teslaCarlo.c.o CMakeFiles/teslaCarlo.dir/stdrobot.c.o  -o teslaCarlo  ../src/libclient.a 

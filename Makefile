@@ -197,6 +197,36 @@ sensor.c.s:
 	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/sensor.dir/build.make applications/CMakeFiles/sensor.dir/sensor.c.s
 .PHONY : sensor.c.s
 
+stdrobot.o: stdrobot.c.o
+
+.PHONY : stdrobot.o
+
+# target to build an object file
+stdrobot.c.o:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/teslaCarlo.dir/build.make applications/CMakeFiles/teslaCarlo.dir/stdrobot.c.o
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/wall.dir/build.make applications/CMakeFiles/wall.dir/stdrobot.c.o
+.PHONY : stdrobot.c.o
+
+stdrobot.i: stdrobot.c.i
+
+.PHONY : stdrobot.i
+
+# target to preprocess a source file
+stdrobot.c.i:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/teslaCarlo.dir/build.make applications/CMakeFiles/teslaCarlo.dir/stdrobot.c.i
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/wall.dir/build.make applications/CMakeFiles/wall.dir/stdrobot.c.i
+.PHONY : stdrobot.c.i
+
+stdrobot.s: stdrobot.c.s
+
+.PHONY : stdrobot.s
+
+# target to generate assembly for a file
+stdrobot.c.s:
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/teslaCarlo.dir/build.make applications/CMakeFiles/teslaCarlo.dir/stdrobot.c.s
+	cd /Users/marigov/Documents/Simulator_Release_170110/Client && $(MAKE) -f applications/CMakeFiles/wall.dir/build.make applications/CMakeFiles/wall.dir/stdrobot.c.s
+.PHONY : stdrobot.c.s
+
 tesla.o: tesla.c.o
 
 .PHONY : tesla.o
@@ -293,6 +323,9 @@ help:
 	@echo "... sensor.o"
 	@echo "... sensor.i"
 	@echo "... sensor.s"
+	@echo "... stdrobot.o"
+	@echo "... stdrobot.i"
+	@echo "... stdrobot.s"
 	@echo "... tesla.o"
 	@echo "... tesla.i"
 	@echo "... tesla.s"

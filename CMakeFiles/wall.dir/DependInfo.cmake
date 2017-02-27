@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/Users/marigov/Documents/Simulator_Release_170110/Client/applications/stdrobot.c" "/Users/marigov/Documents/Simulator_Release_170110/Client/applications/CMakeFiles/wall.dir/stdrobot.c.o"
   "/Users/marigov/Documents/Simulator_Release_170110/Client/applications/wall.c" "/Users/marigov/Documents/Simulator_Release_170110/Client/applications/CMakeFiles/wall.dir/wall.c.o"
   )
 set(CMAKE_C_COMPILER_ID "Clang")

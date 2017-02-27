@@ -1,45 +1,16 @@
 #include "simpletools.h"                      // Include simpletools header
 #include "abdrive.h"                          // Include abdrive header
 #include "ping.h"
-#include <time.h>
+#include "stdrobot.h"
 
-#define Kp 1.8
-#define Ki 0.01
-#define Kd 0.00
+#define Kp 1.25
+#define BASESPEED 20
 
-#define BASESPEED 48
-
-//IR sensor values
-volatile int irRight, irLeft;
-unsigned int stack[40 + 25];                  // Stack vars for other cog
-void getIR();
-
-//delay in seconds for measurament
-double delay = 0.5;
-
-//pid variables
-
-double errorSum = 0;
-double lastError = 0;
-int correction;
-void computePID();
-void computePing();
-
-int ping_distance = 0;
-
-int goal;
-int i = 0;
-
-double get_time_sec() {
-    struct timespec t;
-    clock_gettime(CLOCK_MONOTONIC, &t);
-    return (double)t.tv_sec + 1.0e-9 * t.tv_nsec;
-}
+int irRight, irLeft, correction, goal = 11;
+int pingDistance;
 
 void getIR() {
-    low(26);
-    low(27);
-    while (1) {
+        pingDistance = ping_cm(8);
         int tmpRight = 0;
         int tmpLeft = 0;
         for (int dacVal = 0; dacVal < 160; dacVal += 8) {
@@ -53,33 +24,14 @@ void getIR() {
         }
         irRight = tmpRight;
         irLeft = tmpLeft;
-    }
 }
-
-
-
 
 void computePID() {
-    double init = get_time_sec();
-    while (1) {
-        double now = get_time_sec();
-        double timeSpan = now - init;
-
-        if (timeSpan > 0.05) {
-            double error = double(goal - irRight);
-            errorSum += (error * timeSpan);
-            double dError = -(error - lastError) / timeSpan;
-
-
-            correction = Kp * error + Ki * errorSum - Kd * dError;
-            printf("%f\n", error);
-            fflush(stdout);
-
-            lastError = error;
-            init = get_time_sec();
-        }
-    }
+    double error;
+    error = (double)(goal - irRight);
+    correction = Kp * error;
 }
+
 
 int absolute(int x) {
     if (x < 0) { x *= -1;}
@@ -87,19 +39,19 @@ int absolute(int x) {
 }
 
 int main() {
-    cog_run(getIR, 128);
-    cog_run(computePID, 128);
-    double initTimer = get_time_sec();
+
+    low(26);
+    low(27);
+
     while (1) {
-        while ((get_time_sec() - initTimer) < 0.5) {
-            goal = irRight;
-        }
+        getIR();
+        computePID();
+        printf("Hoal");
+        printf("Correction: %d", correction);
+        fflush(stdout);
 
-        ping_distance = ping_cm(8);
-        while (ping_distance > 10) {
-
-            // pid correction value calculation with a specific time delay
-            if (correction == 0 || (absolute(correction) < 4 && absolute(correction) > -4)) {
+        if (pingDistance > 15) {
+            if (correction == 0 || (absolute(correction) < 1 && absolute(correction) > -1)) {
                 drive_speed(BASESPEED, BASESPEED);
             }
             else {
@@ -111,8 +63,16 @@ int main() {
                     drive_speed(BASESPEED - correction, BASESPEED + correction);
                 }
             }
+        } else {
+            drive_speed(0, 0);
+            pause(1000);
+            turn(180);
+            printf("stop!");
+            fflush(stdout);
+            printf("Stop\n");
         }
-        drive_speed(0, 0);
     }
+
     return 0;
+
 }

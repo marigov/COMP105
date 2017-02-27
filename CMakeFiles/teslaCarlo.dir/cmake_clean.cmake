@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/teslaCarlo.dir/teslaCarlo.c.o"
+  "CMakeFiles/teslaCarlo.dir/stdrobot.c.o"
   "teslaCarlo.pdb"
   "teslaCarlo"
 )

@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/wall.dir/wall.c.o"
+  "CMakeFiles/wall.dir/stdrobot.c.o"
   "wall.pdb"
   "wall"
 )
