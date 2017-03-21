@@ -251,6 +251,15 @@ void followWall() {
     zeroRadiusTurn(180);
 }
 
+// Graph implementation
+
+typedef struct node {
+    int position[2];
+    struct node *adjacent;
+} Node;
+
+
+
 int main() {
 
     drive_goto(20, 20);
@@ -260,6 +269,34 @@ int main() {
 
     followWall();
 
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if(grid[i][j + 1].border[S] == 1) {
+                print("x: %d y: %d, connected to x: %d y: %d\n", i, j, i, j +1);
+            }  
+            if ( grid[i + 1][j].border[W] == 1) {
+                print("x: %d y: %d, connected to x: %d y: %d\n", i, j, i+1, j);
+
+            }  
+            if (grid[i][j - 1].border[N] == 1) {
+                print("x: %d y: %d, connected to x: %d y: %d\n", i, j, i, j-1);
+
+
+            } 
+            if (grid[i - 1][j].border[E] == 1) {
+                print("x: %d y: %d, connected to x: %d y: %d\n", i, j, i-1, j);
+            }
+        
+            // print("x: %d, y: %d \n",i,j);
+            //       print(
+            // "North: %d, East: %d, South: %d, West: %d\n",
+            //     grid[i][j].border[0],
+            //     grid[i][j].border[1],
+            //     grid[i][j].border[2],
+            //     grid[i][j].border[3]);
+            // }
+        }
+    }
 
     return 0;
 }
