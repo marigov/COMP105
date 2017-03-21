@@ -5,7 +5,7 @@
 #define WHEEL_DIAMETRE 6.62
 #define ROBOT_WIDTH 10.58
 #define WHEEL_ENCODER_TICKS 64
-#define CELL_WIDTH 41
+#define CELL_WIDTH 41.5
 #define TICK_LENGTH 0.325
 
 
@@ -103,13 +103,13 @@ void getBorders() {
         grid[position.x][position.y].border[d.value] = sense[i]();
     }
 
-    print(
-        "North: %d, East: %d, South: %d, West: %d\n",
-        grid[position.x][position.y].border[N],
-        grid[position.x][position.y].border[E],
-        grid[position.x][position.y].border[S],
-        grid[position.x][position.y].border[W]
-    );
+    /*  print(
+          "North: %d, East: %d, South: %d, West: %d\n",
+          grid[position.x][position.y].border[N],
+          grid[position.x][position.y].border[E],
+          grid[position.x][position.y].border[S],
+          grid[position.x][position.y].border[W]
+      );*/
 }
 
 // It will fill the borders of the unvisited cells, by the adjacent cells
@@ -151,7 +151,6 @@ void updatePosition() {
         }
     }
 }
-
 // Basic movement functionalities and calculations of leftovers
 
 double cmToTicks(double cm) {
@@ -162,10 +161,7 @@ double degToRad(double degrees) {
     return degrees * (PI / 180);
 }
 
-/* Carlo's awesome code
-++++++++++++++++++++++++ */
-
-double normalizeAngle(double degrees) {
+double normAngle(double degrees) {
     while (degrees > 180) {
         degrees -= 360;
     }
@@ -177,7 +173,7 @@ double normalizeAngle(double degrees) {
 
 void zeroRadiusTurn(double degrees) {
     static double leftovers = 0;
-    degrees = normalizeAngle(degrees);
+    degrees = normAngle(degrees);
     double theta = degToRad(degrees);
     double arc = cmToTicks(theta * ROBOT_WIDTH / 2);
     int ticks = (int) round(arc);
@@ -212,9 +208,6 @@ void goForward() {
     updatePosition();
 }
 
-/* End of Carlo's awesome code
-++++++++++++++++++++++++ */
-
 void turnClock() {
     zeroRadiusTurn(90);
     updateDirection(1);
@@ -225,13 +218,51 @@ void turnAntiClock() {
     updateDirection(-1);
 }
 
+int cells[4][4] =
+{
+    {1, 5, 9, 13},
+    {2, 6, 10, 14},
+    {3, 7, 11, 15},
+    {4, 8, 12, 16}
+
+};
+
+int flag = 0;
+int currentCell;
+
+int fwdPath[30];
+int fwdPathLength = 0;
+int bckPath[30];
+int bckPathLength = 0;
+
+
+void addToFwdPath() {
+    fwdPath[fwdPathLength] = currentCell;
+    fwdPathLength++;
+}
+
+void addToBcwPath() {
+    bckPath[bckPathLength] = currentCell;
+    bckPathLength++;
+}
+
 void followWall() {
     getBorders();
     grid[position.x][position.y].border[S] = 0; //Since we come from the bottom
     goForward();
-    print("X: %d, Y: %d\n", position.x, position.y);
     while (!(position.x == 0 && position.y == -1)) {
         getBorders();
+        currentCell = cells[position.x][position.y];
+        if (currentCell == 16) {
+            flag = 1;
+        }
+        if (flag == 0) {
+            addToFwdPath();
+        } else {
+            addToBcwPath();
+        }
+        print("Cell: %d\n",  currentCell);
+        fflush(stdout);
         Direction right;
         right.value = position.direction.value + RIGHT;
         if (grid[position.x][position.y].border[right.value]) {
@@ -245,20 +276,21 @@ void followWall() {
             }
             goForward();
         }
-        print("X: %d, Y: %d\n", position.x, position.y);
+        //print("X: %d, Y: %d\n", position.x, position.y);
     }
     getAllBorders();
     zeroRadiusTurn(180);
 }
 
-// Graph implementation
+void printPath(int *path, int length) {
+    for (int i = 0; i < length; i++ ) {
+        print("%d ", path[i]);
+        fflush(stdout);
+    }
+    print("\n");
+    fflush(stdout);
 
-typedef struct node {
-    int position[2];
-    struct node *adjacent;
-} Node;
-
-
+}
 
 int main() {
 
@@ -269,34 +301,10 @@ int main() {
 
     followWall();
 
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if(grid[i][j + 1].border[S] == 1) {
-                print("x: %d y: %d, connected to x: %d y: %d\n", i, j, i, j +1);
-            }  
-            if ( grid[i + 1][j].border[W] == 1) {
-                print("x: %d y: %d, connected to x: %d y: %d\n", i, j, i+1, j);
-
-            }  
-            if (grid[i][j - 1].border[N] == 1) {
-                print("x: %d y: %d, connected to x: %d y: %d\n", i, j, i, j-1);
+    printPath(fwdPath, fwdPathLength);
+        printPath(bckPath, bckPathLength);
 
 
-            } 
-            if (grid[i - 1][j].border[E] == 1) {
-                print("x: %d y: %d, connected to x: %d y: %d\n", i, j, i-1, j);
-            }
-        
-            // print("x: %d, y: %d \n",i,j);
-            //       print(
-            // "North: %d, East: %d, South: %d, West: %d\n",
-            //     grid[i][j].border[0],
-            //     grid[i][j].border[1],
-            //     grid[i][j].border[2],
-            //     grid[i][j].border[3]);
-            // }
-        }
-    }
 
     return 0;
 }
