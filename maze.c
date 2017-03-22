@@ -70,14 +70,26 @@ _Bool senseUp() {
     return ping_cm(8) > 30;
 }
 
+
 _Bool senseRight() {
-    freqout(1, 1, 38000);
-    return input(2) != 0;
+    int irRight = 0;
+    for (int dacVal = 0; dacVal < 160; dacVal += 8) {
+        dac_ctr(27, 1, dacVal);
+        freqout(1, 1, 38000);
+        irRight += input(2);
+    }
+    if(irRight<19){return 0;};
+    return 1;
 }
 
 _Bool senseLeft() {
-    freqout(11, 1, 38000);
-    return input(10) != 0;
+    int irLeft = 0;
+    for (int dacVal = 0; dacVal < 160; dacVal += 8) {
+        dac_ctr(26, 0, dacVal);
+        freqout(11, 1, 38000);
+        irLeft += input(10);    }
+  if(irLeft<19){return 0;};
+    return 1;
 }
 
 _Bool senseDown() {
