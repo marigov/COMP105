@@ -5,7 +5,7 @@
 #define WHEEL_DIAMETRE 6.62
 #define ROBOT_WIDTH 10.58
 #define WHEEL_ENCODER_TICKS 64
-#define CELL_WIDTH 41.5
+#define CELL_WIDTH 41
 #define TICK_LENGTH 0.325
 
 
@@ -151,6 +151,7 @@ void updatePosition() {
         }
     }
 }
+
 // Basic movement functionalities and calculations of leftovers
 
 double cmToTicks(double cm) {
@@ -218,33 +219,54 @@ void turnAntiClock() {
     updateDirection(-1);
 }
 
-int cells[4][4] =
-{
-    {1, 5, 9, 13},
-    {2, 6, 10, 14},
-    {3, 7, 11, 15},
-    {4, 8, 12, 16}
-
+char cells[5][4] = {
+    {'a', 'e', 'i', 'm'},
+    {'b', 'f', 'j', 'n'},
+    {'c', 'g', 'k', 'o'},
+    {'d', 'h', 'l', 'p'},
 };
 
+
+
+char *finalGo;
+char *raceFwd;
+char *raceBck;
+
+char *finalBack;
+
+int lenghtFGo;
+int lenghtFBack;
+
+int X = 0, Y = 0;
+char currentCell;
+
+
+char pathGo[25];
+int orientationGo[25];
+
+char pathBack[25];
+int orientationBack[25];
+
+int lengthGo = 0;
+int lengthBack = 0;
+
+int addToPathTo()
+{
+    pathGo[lengthGo] = cells[position.x][position.y];
+    orientationGo[lengthGo] = position.direction.value;
+    lengthGo++;
+    return 1;
+}
+
+int addToPathBack()
+{
+    pathBack[lengthBack] = cells[position.x][position.y];
+    orientationBack[lengthBack] = position.direction.value;
+    lengthBack++;
+    return 1;
+}
+
 int flag = 0;
-int currentCell;
-
-int fwdPath[30];
-int fwdPathLength = 0;
-int bckPath[30];
-int bckPathLength = 0;
-
-
-void addToFwdPath() {
-    fwdPath[fwdPathLength] = currentCell;
-    fwdPathLength++;
-}
-
-void addToBcwPath() {
-    bckPath[bckPathLength] = currentCell;
-    bckPathLength++;
-}
 
 void followWall() {
     getBorders();
@@ -253,16 +275,12 @@ void followWall() {
     while (!(position.x == 0 && position.y == -1)) {
         getBorders();
         currentCell = cells[position.x][position.y];
-        if (currentCell == 16) {
-            flag = 1;
-        }
+        print("Cell: %c Orientation: %d\n", currentCell, position.direction.value);
         if (flag == 0) {
-            addToFwdPath();
+            addToPathTo();
         } else {
-            addToBcwPath();
+            addToPathBack();
         }
-        print("Cell: %d\n",  currentCell);
-        fflush(stdout);
         Direction right;
         right.value = position.direction.value + RIGHT;
         if (grid[position.x][position.y].border[right.value]) {
@@ -276,20 +294,166 @@ void followWall() {
             }
             goForward();
         }
+        if (currentCell == 'p') {
+            flag = 1;
+            addToPathBack();
+        }
         //print("X: %d, Y: %d\n", position.x, position.y);
     }
     getAllBorders();
     zeroRadiusTurn(180);
 }
 
-void printPath(int *path, int length) {
-    for (int i = 0; i < length; i++ ) {
-        print("%d ", path[i]);
-        fflush(stdout);
+char* join(char* path, int start, int end, int length) {
+    int index = 0;
+    char *newPath = malloc(((end - start) + 1) * sizeof(char));
+    for (int i = 0; i < length; i++)
+    {
+        if ((i <= start) || (i > end))
+        {
+            newPath[index] = path[i];
+            index++;
+        }
+    }
+    return newPath;
+
+}
+
+char* removeDuplicates(char* path, int length) {
+    for (int i = 0; i < length; i++) {
+        for (int j = length - 1; j > i; j--) {
+            if (path[j] == path[i]) {
+                char *newPath = malloc((length - (j - i)) * sizeof(char));
+                newPath = removeDuplicates(join(path, i, j, length), length - (j - i));
+                return newPath;
+            }
+        }
+    }
+    return path;
+}
+
+void printPath(char* path, int lenght) {
+    for (int i = 0; i < lenght; i++) {
+        print("%c", path[i]);
     }
     print("\n");
-    fflush(stdout);
+}
 
+int getLength(char* path) {
+    int i = 0;
+    while (path[i] != '\0') {
+        i++;
+    }
+    return i;
+}
+
+int* setIndexs(char *path, char *shortPath, int length, int lengthShort)
+{
+    int *indices = malloc(lengthShort * sizeof(int));
+    int index = 0;
+    for (int i = 0; i < lengthShort; i++)
+    {
+        for (int j = i; j < length; j++)
+        {
+            if (shortPath[i] == path[j])
+            {
+                indices[index] = j;
+                index++;
+                j = length;
+            }
+        }
+    }
+    return indices;
+}
+
+void getRaceFwd() {
+    int* indexs  = setIndexs(pathGo, finalGo, lengthGo, lenghtFGo);
+    for (int i = 0; i < lenghtFGo; i++) {
+        print("Cell: %c Orientation: %d \n", finalGo[i], orientationGo[indexs[i]]);
+    }
+    print("Straight\n");
+    for (int i = 0; i < lenghtFGo - 1; i++) {
+        int diff = orientationGo[indexs[i]] - orientationGo[indexs[i + 1]];
+        if (diff == 0) {
+            print("Straight\n");
+            raceFwd[i] = 's';
+        } else if (diff == -1) {
+            print("Right\n");
+            raceFwd[i] = 'r';
+
+        } else if (diff == 1) {
+            print("Left\n");
+            raceFwd[i] = 'l';
+        }
+    }
+}
+
+void getRaceBck() {
+    int* indexs  = setIndexs(pathBack, finalBack, lengthBack, lenghtFBack);
+    int* raceBckTMP = malloc(sizeof(int) * lenghtFBack);
+
+    for (int i = 0; i < lenghtFBack; i++) {
+        print("Index: %d Cell: %c Orientation: %d \n", i, finalBack[i], orientationBack[indexs[i]]);
+        print("Index race: %d \n", (lenghtFBack - 1) - i);
+        raceBckTMP[(lenghtFBack) - i] = orientationBack[indexs[i]];
+    }
+
+    raceBckTMP[0] = 2;
+
+    print("Straight\n");
+    for (int i = 0; i < lenghtFBack; i++) {
+        int diff = raceBckTMP[i]-raceBckTMP[i+1];
+        print("Diff: %d \n", diff);
+        if (diff == 0) {
+            print("Straight\n");
+            raceBck[i] = 's';
+        } else if (diff == -1) {
+            print("Right\n");
+            raceBck[i] = 'r';
+
+        } else if (diff == 1) {
+            print("Left\n");
+            raceBck[i] = 'l';
+        }
+      
+    }
+
+
+}
+
+void driveBck() {
+    goForward();
+     for (int i = 0; i < lenghtFBack; i++) {
+        print("Direction: %c \n", raceBck[i]);
+        if (raceBck[i] == 's') {
+            goForward();
+        } else if (raceBck[i] == 'r') {
+            turnClock();
+            goForward();
+
+        } else if (raceBck[i] == 'l') {
+            turnAntiClock();
+            goForward();
+
+        }
+    }
+}
+void driveFwd() {
+    goForward();
+    for (int i = 0; i < lenghtFGo - 1; i++) {
+        print("Direction: %c \n", raceFwd[i]);
+        if (raceFwd[i] == 's') {
+            goForward();
+        } else if (raceFwd[i] == 'r') {
+            turnClock();
+            goForward();
+
+        } else if (raceFwd[i] == 'l') {
+            turnAntiClock();
+            goForward();
+
+        }
+    }
 }
 
 int main() {
@@ -301,10 +465,33 @@ int main() {
 
     followWall();
 
-    printPath(fwdPath, fwdPathLength);
-        printPath(bckPath, bckPathLength);
+    finalGo = removeDuplicates(pathGo, lengthGo);
+    lenghtFGo = getLength(finalGo) - 1;
+    finalBack = removeDuplicates(pathBack, lengthBack);
+    lenghtFBack = getLength(finalBack);
+
+    raceFwd = malloc(sizeof(char) * lenghtFGo);
+    raceBck = malloc(sizeof(char) * lenghtFBack);
 
 
+    printPath(pathGo, lengthGo);
+    printPath(pathBack, lengthBack);
+    printPath(finalGo, lenghtFGo);
+    printPath(finalBack, lenghtFBack);
+    getRaceFwd();
+    print("-- \n");
+    getRaceBck();
+
+
+
+
+    if (lenghtFBack < lenghtFGo) {
+        print("2nd path");
+        driveBck();
+    } else {
+        print("1st path");
+        driveFwd();
+    }
 
     return 0;
 }
