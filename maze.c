@@ -72,13 +72,11 @@ _Bool senseUp() {
 
 _Bool senseRight() {
     freqout(1, 1, 38000);
-    print("Right: %d", input(2));
     return input(2) != 0;
 }
 
 _Bool senseLeft() {
     freqout(11, 1, 38000);
-    print("Left: %d \n", input(10));
     return input(10) != 0;
 }
 
@@ -223,7 +221,7 @@ void turnAntiClock() {
 
 // Cells for storing our path
 
-char cells[6][4] = {
+char cells[5][4] = {
     {'a', 'e', 'i', 'm'},
     {'b', 'f', 'j', 'n'},
     {'c', 'g', 'k', 'o'},
@@ -273,44 +271,44 @@ void printList(CellPosition* head) {
     print("\n");
 }
 
-int addFwd()
+void addFwd()
 {
     CellPosition* temp = headFwd;
     CellPosition* newNode = GetNewNode(cells[position.x][position.y], position.direction.value);
     if (headFwd == NULL) {
         headFwd = newNode;
-        return 1;
+        return;
     }
-    while (temp->next != NULL) temp = temp->next; // Go To last Node
+    while (temp->next != NULL) temp = temp->next;
     temp->next = newNode;
     newNode->prev = temp;
-    return 1;
 }
 
 
-int addBck()
+void addBck()
 {
+    CellPosition* temp = headBck;
     CellPosition* newNode = GetNewNode(cells[position.x][position.y], position.direction.value);
     if (headBck == NULL) {
         headBck = newNode;
-        return 1;
+        return;
     }
-    headBck->prev = newNode;
-    newNode->next = headBck;
-    headBck = newNode;
-    return 1;
+    while (temp->next != NULL) temp = temp->next;
+    temp->next = newNode;
+    newNode->prev = temp;
 }
 
 int addLast()
 {
+    CellPosition* temp = headBck;
     CellPosition* newNode = GetNewNode('z', 2);
     if (headBck == NULL) {
         headBck = newNode;
         return 1;
     }
-    headBck->prev = newNode;
-    newNode->next = headBck;
-    headBck = newNode;
+    while (temp->next != NULL) temp = temp->next; // Go To last Node
+    temp->next = newNode;
+    newNode->prev = temp;
     return 1;
 }
 
@@ -373,6 +371,7 @@ void followWall() {
         }
         if (currentCell == 'p') {
             flag = 1;
+            print("\n");
         }
         goFwd();
         //print("X: %d, Y: %d\n", position.x, position.y);
@@ -382,19 +381,156 @@ void followWall() {
     cleanTurn(180);
 }
 
+int getSize(CellPosition* head) {
+    CellPosition* temp = head;
+    int i = 0;
+    while (temp != NULL) {
+        i++;
+        temp = temp->next;
+    }
+    return i;
+}
+
+char *commandsFwd;
+char *commandsBck;
 
 
 
+void generateRaceFwd(CellPosition* head) {
+    CellPosition* temp = head;
+    int i = 0;
+    while (temp->next != NULL) {
+        //print("Direction: %d\n", temp->direction - (temp->next)->direction);
+        int diff = temp->direction - (temp->next)->direction;
+        if (diff == 0) {
+            commandsFwd[i] = 's';
+            print("Straight\n");
+        } else if (diff == -1) {
+            commandsFwd[i] = 'r';
+            print("Right\n");
+
+        } else if (diff == 1) {
+            commandsFwd[i] = 'l';
+            print("Left\n");
+        }
+        else if (diff == -3) {
+            commandsFwd[i] = 'l';
+            print("Left\n");
+        }
+        else if (diff == 3) {
+            commandsFwd[i] = 'r';
+            print("Right\n");
+        }
+        temp = temp->next;
+        if (temp->next == NULL) {
+            break;
+        }
+        i++;
+    }
+}
+
+void generateRaceBck(CellPosition* head) {
+    CellPosition* temp = head;
+    int i = 0;
+    while (temp->next != NULL) {
+        print("Direction: %d\n", temp->direction - (temp->next)->direction);
+        int diff = temp->direction - (temp->next)->direction;
+        if (diff == 0) {
+            commandsBck[i] = 's';
+            print("Straight\n");
+        } else if (diff == -1) {
+            commandsBck[i] = 'r';
+            print("Right\n");
+
+        } else if (diff == 1) {
+            commandsBck[i] = 'l';
+            print("Left\n");
+        }
+        else if (diff == -3) {
+            commandsBck[i] = 'l';
+            print("Left\n");
+        }
+        else if (diff == 3) {
+            commandsBck[i] = 'r';
+            print("Right\n");
+        }
+        temp = temp->next;
+        if (temp->next == NULL) {
+            break;
+        }
+        i++;
+    }
+}
+
+void drive(char *arr, int size) {
+    goFwd();
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == 's') {
+            goFwd();
+        } else if (arr[i] == 'r') {
+            turnClock();
+            goFwd();
+
+        } else if (arr[i] == 'l') {
+            turnAntiClock();
+            goFwd();
+        }
+    }
+}
+
+void flip(CellPosition** head_ref)
+{
+    CellPosition* prev   = NULL;
+    CellPosition* current = *head_ref;
+    CellPosition* next;
+    while (current != NULL)
+    {
+        next  = current->next;  
+        current->next = prev;   
+        prev = current;
+        current = next;
+    }
+    *head_ref = prev;
+}
+ 
 int main() {
+    
     drive_goto(20, 20);
     initSenseFuncs();
     setInitialPosition();
     setInitialGrid();
+    
     headFwd = NULL;
     headBck = NULL;
+    
     followWall();
+    
     deleteDuplicates(headFwd);
     deleteDuplicates(headBck);
+    flip(&headBck);
+    
+    int sizeFwd = getSize(headFwd);
+    int sizeBcw = getSize(headBck);
+    commandsFwd = malloc(sizeof(char) * (sizeFwd) - 1);
+    commandsBck = malloc(sizeof(char) * (sizeBcw) - 1);
+    
+    generateRaceFwd(headFwd);
+    generateRaceBck(headBck);
+
+    for (int i = 0; i < sizeFwd - 1; i++) {
+        print("%c\n", commandsFwd[i]);
+    }
+    print("--\n");
+    for (int i = 0; i < sizeBcw - 1; i++) {
+        print("%c\n", commandsBck[i]);
+    }
+
+    if (sizeFwd > sizeBcw) {
+        drive(commandsBck, sizeBcw - 1);
+    } else {
+        drive(commandsFwd, sizeFwd - 1);
+    }
+
 
 
     return 0;
