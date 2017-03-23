@@ -72,17 +72,20 @@ _Bool senseUp() {
 
 _Bool senseRight() {
     freqout(1, 1, 38000);
+    print("Right: %d", input(2));
     return input(2) != 0;
 }
 
 _Bool senseLeft() {
     freqout(11, 1, 38000);
+    print("Left: %d \n", input(10));
     return input(10) != 0;
 }
 
 _Bool senseDown() {
     return 1;
 }
+
 
 typedef _Bool (*SenseFunc)( void );
 
@@ -219,7 +222,7 @@ void turnAntiClock() {
     updateDirection(-1);
 }
 
-// Cells for storing our path
+// Cells used to store our path
 
 char cells[5][4] = {
     {'a', 'e', 'i', 'm'},
@@ -261,7 +264,6 @@ CellPosition *headFwd = NULL;
 CellPosition *headBck = NULL;
 
 
-
 void printList(CellPosition* head) {
     CellPosition* temp = head;
     while (temp != NULL) {
@@ -270,6 +272,8 @@ void printList(CellPosition* head) {
     }
     print("\n");
 }
+
+// Add to forward path.
 
 void addFwd()
 {
@@ -284,6 +288,7 @@ void addFwd()
     newNode->prev = temp;
 }
 
+// Add to backwards path.
 
 void addBck()
 {
@@ -298,6 +303,8 @@ void addBck()
     newNode->prev = temp;
 }
 
+// Append initial cell to backwards path.  
+
 int addLast()
 {
     CellPosition* temp = headBck;
@@ -311,6 +318,8 @@ int addLast()
     newNode->prev = temp;
     return 1;
 }
+
+// Removes the duplicates from the linked list. Tremaux's algorithm implementation.
 
 void deleteDuplicates(CellPosition* head) {
     CellPosition* temp = head;
@@ -344,9 +353,8 @@ void deleteDuplicates(CellPosition* head) {
     printList(head);
 }
 
-int flag = 0;
-
 void followWall() {
+    int flag = 0; // Change to back path
     getBorders();
     grid[position.x][position.y].border[S] = 0; //Since we come from the bottom
     goFwd();
@@ -369,6 +377,8 @@ void followWall() {
                 turnAntiClock();
             }
         }
+
+        // Change to bck path
         if (currentCell == 'p') {
             flag = 1;
             print("\n");
@@ -380,6 +390,9 @@ void followWall() {
     getAllBorders();
     cleanTurn(180);
 }
+
+
+// Returns size of a doubly linked list.
 
 int getSize(CellPosition* head) {
     CellPosition* temp = head;
@@ -400,7 +413,6 @@ void generateRaceFwd(CellPosition* head) {
     CellPosition* temp = head;
     int i = 0;
     while (temp->next != NULL) {
-        //print("Direction: %d\n", temp->direction - (temp->next)->direction);
         int diff = temp->direction - (temp->next)->direction;
         if (diff == 0) {
             commandsFwd[i] = 's';
@@ -462,18 +474,33 @@ void generateRaceBck(CellPosition* head) {
     }
 }
 int distanceLeft, distanceRight, previousLeft, previousRight;
-int values[4][4] = {
+int distance_speed[4][4] = {
     {60, 60, 128, 128},
     {33, 10, 128, 20},
     {10, 33, 20, 128},
 };
 void drive(char *arr, int size) {
-    drive_goto(100,100);
+    drive_speed(0, 0);
+    distanceLeft = 0;
+    distanceRight = 0;
+    drive_getTicks(&previousLeft, &previousRight);
+
+    // Initial movement.
+    while (distanceLeft <= 50 || distanceRight <= 50)
+    {
+        drive_speed(128, 128);
+        drive_getTicks(&distanceLeft, &distanceRight);
+        distanceLeft -= previousLeft;
+        distanceRight -= previousRight;
+    }
+
+    drive_speed(0, 0);
+    pause(700);
     int flag = 0;
     int d = 0;
     for (int i = 0; i < size; i++) {
         if (arr[i] == 's') {
-            //oFwd();
+            //goFwd();
             d = 0;
         } else if (arr[i] == 'r') {
             // turnClock();
@@ -490,24 +517,26 @@ void drive(char *arr, int size) {
         distanceLeft = 0;
         distanceRight = 0;
         drive_getTicks(&previousLeft, &previousRight);
-        while (distanceLeft <= values[d][0] || distanceRight <= values[d][1])
+        while (distanceLeft <= distance_speed[d][0] || distanceRight <= distance_speed[d][1])
         {
-            drive_speed(values[d][2], values[d][3]);
+            drive_speed(distance_speed[d][2], distance_speed[d][3]);
             drive_getTicks(&distanceLeft, &distanceRight);
             distanceLeft -= previousLeft;
             distanceRight -= previousRight;
         }
         drive_speed(0, 0);
         pause(700);
+
+        // A straight movement always follows a turn.
         if (flag == 1) {
             flag = 0;
             d = 0;
             distanceLeft = 0;
             distanceRight = 0;
             drive_getTicks(&previousLeft, &previousRight);
-            while (distanceLeft <= 40 || distanceRight <= 40)
+            while (distanceLeft <= 42 || distanceRight <= 42)
             {
-                drive_speed(values[d][2], values[d][3]);
+                drive_speed(distance_speed[d][2], distance_speed[d][3]);
                 drive_getTicks(&distanceLeft, &distanceRight);
                 distanceLeft -= previousLeft;
                 distanceRight -= previousRight;
@@ -517,6 +546,8 @@ void drive(char *arr, int size) {
         pause(700);
     }
 }
+
+// Reverses a doubly linked list
 
 void flip(CellPosition** head_ref)
 {
@@ -565,13 +596,13 @@ int main() {
         print("%c\n", commandsBck[i]);
     }
 
+    // Selects the shortest path
+
     if (sizeFwd > sizeBcw) {
         drive(commandsBck, sizeBcw - 1);
     } else {
         drive(commandsFwd, sizeFwd - 1);
     }
-
-
 
     return 0;
 }
