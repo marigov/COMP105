@@ -461,20 +461,62 @@ void generateRaceBck(CellPosition* head) {
         i++;
     }
 }
-
+int distanceLeft, distanceRight, previousLeft, previousRight;
+int values[4][4] = {
+    {100, 100, 50, 50},
+    {38, -38, 42, -4},
+    {-38, 38, -4, 42},
+};
 void drive(char *arr, int size) {
     goFwd();
+    int flag = 0;
+    int d = 0;
     for (int i = 0; i < size; i++) {
         if (arr[i] == 's') {
-            goFwd();
+            //oFwd();
+            d = 0;
         } else if (arr[i] == 'r') {
-            turnClock();
-            goFwd();
-
+            // turnClock();
+            // goFwd();
+            d = 1;
+            flag = 1;
         } else if (arr[i] == 'l') {
-            turnAntiClock();
-            goFwd();
+            // turnAntiClock();
+            // goFwd();
+            d = 2;
+            flag = 1;
+
         }
+        pause(5000);
+        distanceLeft = 0;
+        distanceRight = 0;
+        drive_getTicks(&previousLeft, &previousRight);
+        while (distanceLeft <= values[d][0] || distanceRight <= values[d][1])
+        {
+            drive_speed(values[d][2], values[d][3]);
+            drive_getTicks(&distanceLeft, &distanceRight);
+            distanceLeft -= previousLeft;
+            distanceRight -= previousRight;
+        }
+        drive_speed(0, 0);
+        pause(5000);
+
+        if (flag == 1) {
+            flag = 0;
+            d = 0;
+            distanceLeft = 0;
+            distanceRight = 0;
+            drive_getTicks(&previousLeft, &previousRight);
+            while (distanceLeft <= values[d][0] || distanceRight <= values[d][1])
+            {
+                drive_speed(values[d][2], values[d][3]);
+                drive_getTicks(&distanceLeft, &distanceRight);
+                distanceLeft -= previousLeft;
+                distanceRight -= previousRight;
+            }
+        }
+        drive_speed(0, 0);
+
     }
 }
 
@@ -485,35 +527,35 @@ void flip(CellPosition** head_ref)
     CellPosition* next;
     while (current != NULL)
     {
-        next  = current->next;  
-        current->next = prev;   
+        next  = current->next;
+        current->next = prev;
         prev = current;
         current = next;
     }
     *head_ref = prev;
 }
- 
+
 int main() {
-    
+
     drive_goto(20, 20);
     initSenseFuncs();
     setInitialPosition();
     setInitialGrid();
-    
+
     headFwd = NULL;
     headBck = NULL;
-    
+
     followWall();
-    
+
     deleteDuplicates(headFwd);
     deleteDuplicates(headBck);
     flip(&headBck);
-    
+
     int sizeFwd = getSize(headFwd);
     int sizeBcw = getSize(headBck);
     commandsFwd = malloc(sizeof(char) * (sizeFwd) - 1);
     commandsBck = malloc(sizeof(char) * (sizeBcw) - 1);
-    
+
     generateRaceFwd(headFwd);
     generateRaceBck(headBck);
 
