@@ -463,12 +463,12 @@ void generateRaceBck(CellPosition* head) {
 }
 int distanceLeft, distanceRight, previousLeft, previousRight;
 int values[4][4] = {
-    {100, 100, 50, 50},
-    {38, -38, 42, -4},
-    {-38, 38, -4, 42},
+    {60, 60, 128, 128},
+    {33, 10, 128, 20},
+    {10, 33, 20, 128},
 };
 void drive(char *arr, int size) {
-    goFwd();
+    drive_goto(100,100);
     int flag = 0;
     int d = 0;
     for (int i = 0; i < size; i++) {
@@ -487,7 +487,6 @@ void drive(char *arr, int size) {
             flag = 1;
 
         }
-        pause(5000);
         distanceLeft = 0;
         distanceRight = 0;
         drive_getTicks(&previousLeft, &previousRight);
@@ -499,15 +498,14 @@ void drive(char *arr, int size) {
             distanceRight -= previousRight;
         }
         drive_speed(0, 0);
-        pause(5000);
-
+        pause(700);
         if (flag == 1) {
             flag = 0;
             d = 0;
             distanceLeft = 0;
             distanceRight = 0;
             drive_getTicks(&previousLeft, &previousRight);
-            while (distanceLeft <= values[d][0] || distanceRight <= values[d][1])
+            while (distanceLeft <= 40 || distanceRight <= 40)
             {
                 drive_speed(values[d][2], values[d][3]);
                 drive_getTicks(&distanceLeft, &distanceRight);
@@ -516,7 +514,7 @@ void drive(char *arr, int size) {
             }
         }
         drive_speed(0, 0);
-
+        pause(700);
     }
 }
 
